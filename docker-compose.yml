@@ -1,0 +1,89 @@
+version: '3'
+services:
+  rus-sis:
+    build: .
+    #image: gitlab.tecso.coop:5100/tecso/rus-dev
+    user: developer
+    container_name: rus-sis
+    networks:
+      redDocker:
+        ipv4_address: 172.16.238.101
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    dns: 172.19.19.22
+    hostname: docker-sis
+    privileged: true
+    ports:
+      - $PORT:$PORT
+      - $PORTDEBUG:8000
+      - $PORTAPIRUS:$PORTAPIRUS
+    volumes:
+      - $WORKSPACE:/home/developer/workspace/
+      - $FILES_DOCKER:/home/developer/files
+      - ~/.m2:/home/developer/.m2
+    env_file: .env
+    environment:
+      - UID
+      - HOST
+      - PORT
+      - PORTDEBUG
+      - PORTAPIRUS
+      - CATALINA_OPTS="-Duser.timezone=America/Argentina/Buenos_Aires"
+      - JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
+      - JAVA_HOME=$JAVA_H
+      - M2_HOME=$M2_H
+      - TOMCAT_AFIP=$HOST:$PORT
+      - TOMCAT_AUDITORIA=$HOST:$PORT
+      - TOMCAT_CAS=$HOST:$PORT
+      - TOMCAT_CESVI=$HOST:$PORT
+      - TOMCAT_COMPRAS=$HOST:$PORT
+      - TOMCAT_CONTABILIDAD=$HOST:$PORT
+      - TOMCAT_DATOSCOMUNES=$HOST:$PORT
+      - TOMCAT_DESARROLLO=$HOST:$PORT
+      - TOMCAT_EMISION=$HOST:$PORT
+      - URL_EMISION=emision-sis
+      - TOMCAT_MOVILSERVER=$HOST:$PORT
+      - TOMCAT_NUEVOZK=$HOST:$PORT
+      - TOMCAT_PORTAL=$HOST:$PORT
+      - TOMCAT_PROCESOS=$HOST:$PORT
+      - TOMCAT_RRHH=$HOST:$PORT
+      - TOMCAT_SECURITY=$HOST:$PORT
+      - TOMCAT_SINIESTROS=$HOST:$PORT
+      - TOMCAT_TESORERIA=$HOST:$PORT
+      - TOMCAT_RUSMOVIL=$HOST:$PORT
+      - SEG_INT=$SEG_INT
+      - PORT_EMISION=$PORT_EMISION
+      - PORT_PROCESOS=$PORT_PROCESOS
+      - PORT_COMPRAS=$PORT_COMPRAS
+      - PORT_TESORERIA=$PORT_TESORERIA
+      - PORT_CONTABILIDAD=$PORT_CONTABILIDAD
+      - PORT_DESARROLLO=$PORT_DESARROLLO
+      - PORT_DATOSCOMUNES=$PORT_DATOSCOMUNES
+      - PORT_RRHH=$PORT_RRHH
+      - PORT_SINIESTROS=$PORT_SINIESTROS
+      - PORT_AUDITORIA=$PORT_AUDITORIA
+      - SIS_BUILD_DIR=$SIS_BUILD_DIRECTORY
+      - SIS_BUILD_DIR_SIS=$SIS_BUILD_DIRECTORY/sis
+      - SIS_BUILD_DIR_MOVIL=$SIS_BUILD_DIRECTORY/movilserver
+      - BUILD_DIR_BASE=$SIS_BUILD_DIRECTORY
+      - TOMCAT_HOME
+      - SIS_ENVIRONMENT_NAME
+      - CAS_PROTOCOL
+      - AXIS2_HOME
+      - INFORMIX_SERVER_URL
+      - SIS_DB_NAME
+      - RUS_DB_NAME
+      - INFORMIX_SERVER_NAME
+      - INFORMIX_USER
+      - INFORMIX_PASS
+      - JAVA_OPTS
+networks:
+  redDocker:
+          driver: bridge
+          driver_opts:
+              com.docker.network.enable_ipv6: "false"
+          ipam:
+              driver: default
+              config:
+                  - subnet: 172.16.238.0/24
