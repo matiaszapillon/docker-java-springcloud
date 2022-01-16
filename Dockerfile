@@ -69,6 +69,7 @@ WORKDIR /home/developer/workspace/
 
 RUN cd /home/developer/workspace/springCloudExample/discovery-server ; mvn clean install && \
     cd /home/developer/workspace/springCloudExample/service-example ; mvn clean install && \
+    cd /home/developer/workspace/springCloudExample/client ; mvn clean install && \
     chmod u+x /home/developer/workspace/start.sh 
 
 
