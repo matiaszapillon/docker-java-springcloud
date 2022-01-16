@@ -1,1 +1,10 @@
+
 https://hub.docker.com/search?category=base&source=verified&type=image to download images from oficial side
+
+
+The difference between RUN and CMD is that RUN command lets you execute commands inside of your docker image.
+These commands get executed once at build time and get written into your Docker image as a new layer. 
+CMD lets you define a default command to run when your container starts.
+
+
+It is necessary to put a 'wait' in EOF start.sh, otherwise the docker container finishes immediatly. 
