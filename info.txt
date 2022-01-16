@@ -1,0 +1,1 @@
+https://hub.docker.com/search?category=base&source=verified&type=image to download images from oficial side

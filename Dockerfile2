@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:1
+
+FROM openjdk:8
+
+LABEL Matias Zapillon <matiaszapillon@gmail.com>
+
+COPY . /developer/workspace
+COPY .bashrc /root
+
+WORKDIR /developer/workspace
+
+ENV MAVEN_VERSION 3.6.3
+
+RUN apt-get update && apt-get install apt-utils && apt-get update && mkdir newDirectory && \ 
+touch newFile.txt && apt-get install git -y && git --version && \
+apt-get install -y zip unzip && \
+cd /usr/local && curl -fsSL -O "https://www.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz" && \
+tar zxvf apache-maven-3.6.3-bin.tar.gz
+
+#RUN git clone https://github.com/matiaszapillon/springCloudExample.git
+#If I added git clone here, I should add credentials before 
+
+ENV MAVEN_HOME "/usr/local/apache-maven-$MAVEN_VERSION"
+ENV PATH="$MAVEN_HOME/bin:$PATH" 
