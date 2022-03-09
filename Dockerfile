@@ -41,7 +41,7 @@ COPY start.sh /home/developer/workspace
 
 ENV MAVEN_VERSION 3.6.3
 ENV MAVEN_HOME "/usr/local/apache-maven-$MAVEN_VERSION"
-ENV JAVA_HOME "/usr/local/jdk1.8.0_181"
+ENV JAVA_HOME "/usr/local/jdk1.8.0_311"
 
 ENV PATH="$MAVEN_HOME/bin:$JAVA_HOME/bin:$PATH"
 
@@ -79,6 +79,7 @@ RUN cd /home/developer/workspace/springCloudExample/discovery-server ; mvn clean
 EXPOSE 8761
 EXPOSE 9091
 EXPOSE 9092
+
 #Expose is only for information purpose. Then, it is necessary to publish that port using -p host_port:docker_port when running the image.
 #After that, in another terminal you could run 'docker inspect {ID_CONTAINER} to see the IP from the docker and test your service outside docker doing:
 # {ipDocker}:{port_app}

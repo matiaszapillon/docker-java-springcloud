@@ -1,0 +1,45 @@
+# syntax=docker/dockerfile:1
+
+FROM ubuntu:18.04 
+
+ADD jdk* /usr/local/
+
+# Install dependencies
+RUN apt-get update && apt-get install -y apt-utils \
+    wget \ 
+    curl \
+    nano \
+    git \ 
+    ssh \
+    less \ 
+    unzip && \
+    cd /usr/local && curl -fsSL -O "https://www.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz" && \
+    tar -zxvf apache-maven-3.6.3-bin.tar.gz 
+
+RUN mkdir -p /home/developer && mkdir -p /home/developer/workspace && mkdir -p /home/developer/workspace/springCloudExample
+
+COPY .bashrc /home/developer
+COPY /springCloudExample /home/developer/workspace/springCloudExample
+COPY start.sh /home/developer/workspace
+
+ENV MAVEN_VERSION 3.6.3
+ENV MAVEN_HOME "/usr/local/apache-maven-$MAVEN_VERSION"
+ENV JAVA_HOME "/usr/local/jdk1.8.0_311"
+
+ENV PATH="$MAVEN_HOME/bin:$JAVA_HOME/bin:$PATH"
+
+
+#USER developer
+ENV HOME /home/developer
+WORKDIR /home/developer/workspace/
+
+EXPOSE 8761
+EXPOSE 9091
+EXPOSE 9092
+
+RUN cd /home/developer/workspace/springCloudExample/discovery-server ; mvn clean install && \
+    cd /home/developer/workspace/springCloudExample/service-example ; mvn clean install && \
+    cd /home/developer/workspace/springCloudExample/client ; mvn clean install && \
+    chmod u+x /home/developer/workspace/start.sh 
+
+CMD /home/developer/workspace/start.sh
